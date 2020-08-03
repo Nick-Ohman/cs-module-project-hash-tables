@@ -114,9 +114,14 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        hashed = self.hash_index(key)
+        if self.hash_index(key) is None:
+            print("key not found ")
+
+        else:
+
+            hashed = self.hash_index(key)
         
-        self.hash_table[hashed] = None
+            self.hash_table[hashed] = None
 
 
     def get(self, key):
@@ -128,8 +133,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        index = self.hash_index(key)
-        return self.hash_table[index]
+
+        if self.hash_index is None:
+            return None
+        else:
+            index = self.hash_index(key)
+            return self.hash_table[index]
 
     def resize(self, new_capacity):
         """
