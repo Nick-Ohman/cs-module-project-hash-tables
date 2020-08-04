@@ -6,6 +6,53 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
+        self.head = None
+
+    def find(self, value):
+        
+        while self.head is not None:
+            if self.head.value == value:
+                return self.head
+            
+            self.head = self.head.next
+
+        return None
+
+    def delete(self, value):
+
+        # Special case of deleteing head
+        
+        if self.head.value == value:
+            self.head = self.head.next
+            return self.head
+
+        # General case of deleting internal node
+
+        while self.head is not None: 
+            if self.head.next.value == value: ## found it
+                self.head.next = self.head.next # cut it out
+                return self.head # Return delted node
+            else:
+                self.head = self.head.next
+                self.head.next = self.head.next.next 
+        
+        return None # nothing was found
+
+    def insert_at_head(self, node):
+        node.next = self.head
+        self.head = node
+
+    def insert_or_overwrite_value(self, value):
+        node = self.find(value)
+
+        if node is None:
+            #make new node
+            self.insert_at_head(node(value))
+
+        else:
+            #overwrite old value
+            node.value = value
+            
 
 
 # Hash table can't have fewer than this many slots
@@ -100,8 +147,31 @@ class HashTable:
         """
         # Your code here
         index = self.hash_index(key)
+        
+        if self.hash_table[index] is None:
+            self.hash_table[index] = HashTableEntry(key,value)
 
-        self.hash_table[index] = value
+        else:
+            table = self.hash_table[index]
+
+            while table is not None:
+                if table.key == key:
+                    table.value = value
+                    return
+
+                if table.next == None:
+                    table.next = HashTableEntry(key, value)
+                    return
+
+                table = table.next
+
+
+
+
+
+        
+                
+
 
 
 
@@ -114,14 +184,14 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        if self.hash_index(key) is None:
-            print("key not found ")
+        self.put(key, None)
+        self.size -= 1
 
-        else:
+      
 
-            hashed = self.hash_index(key)
-        
-            self.hash_table[hashed] = None
+
+                    
+             
 
 
     def get(self, key):
@@ -133,12 +203,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index = self.hash_index(key)
 
-        if self.hash_index is None:
-            return None
-        else:
-            index = self.hash_index(key)
-            return self.hash_table[index]
+        table = self.hash_table[index]
+        while table != None:
+            if table.key == key:
+                return table.value
+            table = table.next 
+
+        return None
+
+        
 
     def resize(self, new_capacity):
         """
