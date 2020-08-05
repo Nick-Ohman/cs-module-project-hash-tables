@@ -226,12 +226,19 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        old_table = self.hash_table
+        old_capacity = self.capacity
+
+        self.hash_table = [None] * new_capacity
         self.capacity = new_capacity
-        bigHashTable = HashTable(new_capacity)
-        for i in self.hash_table:
-            if i is not None:
-                bigHashTable.put(i.key, i.value)
-        self.hash_table = bigHashTable.hash_table
+
+        for index in range(old_capacity):
+            pos = old_table[index]
+            while pos != None:
+                self.put(pos.key, pos.value)
+                pos = pos.next
+
+
 
 
 
