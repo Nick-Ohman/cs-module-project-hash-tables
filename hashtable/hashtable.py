@@ -71,7 +71,7 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
-        self.capacity = MIN_CAPACITY
+        self.capacity = capacity
         self.size = 0
         self.hash_table = [None] * self.capacity
         
@@ -91,7 +91,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        pass
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -100,8 +100,10 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        pass
+        
+        k = self.get_num_slots()
+        n = self.size
+        return n / k
 
 
     def fnv1(self, key):
@@ -149,6 +151,7 @@ class HashTable:
         index = self.hash_index(key)
         
         if self.hash_table[index] is None:
+            
             self.hash_table[index] = HashTableEntry(key,value)
 
         else:
@@ -223,7 +226,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        pass
+        self.capacity = new_capacity
+        bigHashTable = HashTable(new_capacity)
+        for i in self.hash_table:
+            if i is not None:
+                bigHashTable.put(i.key, i.value)
+        self.hash_table = bigHashTable.hash_table
 
 
 
